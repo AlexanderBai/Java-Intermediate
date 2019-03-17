@@ -1,6 +1,8 @@
-## 一、I/O文件对象
+###一、Java流式原理
 
-文件夹和文件都是用File表示
+###二、File类
+
+- 文件夹和文件都是用File表示
 
 ####1、创建一个文件对象
 
@@ -50,31 +52,31 @@
 > /**
 >  * @Author AlexanderBai
 >  * @data 2019/3/13 20:09
->  */
+> */
 > public class TestFile {
 > 
->     public static void main(String[] args) {
->         File file = new File("G:/demo/d");
->         if (!file.exists()) {
->             System.out.println("file.mkdirs() = " + file.mkdirs());//换成mkdir()类似
->         }
->         System.out.println("file.getAbsolutePath() = " + file.getAbsolutePath());
->         System.out.println("file.getParentFile() = " + file.getParentFile());
->         System.out.println("file.isFile() = " + file.isFile());
->         System.out.println("file.isDirectory() = " + file.isDirectory());
->         System.out.println("file.getName() = " + file.getName());
+>  public static void main(String[] args) {
+>      File file = new File("G:/demo/d");
+>      if (!file.exists()) {
+>          System.out.println("file.mkdirs() = " + file.mkdirs());//换成mkdir()类似
+>      }
+>      System.out.println("file.getAbsolutePath() = " + file.getAbsolutePath());
+>      System.out.println("file.getParentFile() = " + file.getParentFile());
+>      System.out.println("file.isFile() = " + file.isFile());
+>      System.out.println("file.isDirectory() = " + file.isDirectory());
+>      System.out.println("file.getName() = " + file.getName());
 > 
->         File file1 = new File("G:/test");
->         if (!file1.exists()) {
->             file1.mkdirs();
->         }
->         //以file1为父目录创建file2
->         File file2 = new File(file1, "test");
->         if (!file2.exists()) {
->             file2.mkdirs();
->         }
->         System.out.println("file1.getAbsolutePath() = " + file2.getAbsolutePath());
->     }
+>      File file1 = new File("G:/test");
+>      if (!file1.exists()) {
+>          file1.mkdirs();
+>      }
+>      //以file1为父目录创建file2
+>      File file2 = new File(file1, "test");
+>      if (!file2.exists()) {
+>          file2.mkdirs();
+>      }
+>      System.out.println("file1.getAbsolutePath() = " + file2.getAbsolutePath());
+>  }
 > }
 > /**
 > 运行结果：
@@ -126,3 +128,20 @@
 ####4、遍历文件夹
 
 ####5、遍历子文件夹
+
+### 三、输入输出流分类
+
+### 四、节点流与数据流
+
+### 五、InputSteam（输入流）
+
+### 六、OutputSteam（输出流）
+
+### 七、Reader流
+
+### 八、Write流
+
+### 九、节点流讲解
+
+### 十、处理流讲解
+
