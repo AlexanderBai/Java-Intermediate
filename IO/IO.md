@@ -189,7 +189,17 @@
 
 ### 五、InputSteam（输入流）
 
+> - 深色为节点流
+>
+> ![1552922903338](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1552922903338.png)
+
+
+
 ### 六、OutputSteam（输出流）
+
+> - 深色为节点流
+>
+>   ![1552923263829](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1552923263829.png)
 
 ### 七、Reader流
 
@@ -355,4 +365,16 @@
 
 
 ### 十、处理流讲解
+
+#### 1、缓冲流
+
+####2、转换流
+
+####3、数据流
+
+####4、打印流
+
+####5、对象流
+
+
 
