@@ -165,7 +165,7 @@
 >
 >|          类型           |                   字节流                    |              字符流              |
 >| :---------------------: | :-----------------------------------------: | :------------------------------: |
->|       File(文件)        |      FileInputStream、FileOutputStream      |      FileReader、FileWriter      |
+>|     **File(文件)**      |    **FileInputStream、FileOutputStream**    |    **FileReader、FileWriter**    |
 >|  Memory Array（数组）   | ByteArrayInputStream、ByteArrayOutputStream | CharArrayReader、CharArrayWriter |
 >| Memory String（字符串） |              ----------------               |    StringReader、StringWriter    |
 >|      Pipe（管道）       |      PipeInputStream、PipeOutputStream      |      PipeReader、PipeWriter      |
@@ -176,16 +176,16 @@
 
 >​                                                                        **处理流**
 >
->|                    类型                    |                  字节流                   |             字符流             |
->| :----------------------------------------: | :---------------------------------------: | :----------------------------: |
->|          **Buffering（缓冲流）**           | BufferedInputStream、BufferedOutputStream | BufferedReader、BufferedWriter |
->|            Filtering（过滤流）             |   FilterInputStream、FilterOutputStream   |   FilterReader、FilterWriter   |
->| **Converting between bytes and character** |         ------------------------          |   InputStream、OutputStream    |
->|     Object Serialization(对象序列化流)     |    ObjectInputStream、ObjOutputStream     |      --------------------      |
->|       **Data conversion（数据流）**        |     DataInputStream、DataOutputStream     |    -----------------------     |
->|             Counting（计数流）             |           LineNumberInputStream           |        LineNumberReader        |
->|           Peeking ahead(预读流)            |            PushbackInputStream            |         PushbackReader         |
->|           **Printing（打印流）**           |                PrintStream                |          PrintWriter           |
+>|                    类型                    |                    字节流                     |               字符流               |
+>| :----------------------------------------: | :-------------------------------------------: | :--------------------------------: |
+>|          **Buffering（缓冲流）**           | **BufferedInputStream、BufferedOutputStream** | **BufferedReader、BufferedWriter** |
+>|            Filtering（过滤流）             |     FilterInputStream、FilterOutputStream     |     FilterReader、FilterWriter     |
+>| **Converting between bytes and character** |           ------------------------            |     InputStream、OutputStream      |
+>|     Object Serialization(对象序列化流)     |      ObjectInputStream、ObjOutputStream       |        --------------------        |
+>|       **Data conversion（数据流）**        |       DataInputStream、DataOutputStream       |      -----------------------       |
+>|             Counting（计数流）             |             LineNumberInputStream             |          LineNumberReader          |
+>|           Peeking ahead(预读流)            |              PushbackInputStream              |           PushbackReader           |
+>|           **Printing（打印流）**           |                  PrintStream                  |            PrintWriter             |
 
 ### 五、InputSteam（输入流）
 
@@ -196,6 +196,124 @@
 ### 八、Write流
 
 ### 九、节点流讲解
+
+####1、以File类型做为节点流的典型代表
+
+> - **有关文件读写的常用构造方法**
+>
+> | FilterInputStream(File file)     | FileReader(File file)       |
+> | -------------------------------- | --------------------------- |
+> | FilterOutputStream(String namen) | FileWriter(String fileName) |
+>
+> - **`FileInputStream`的常用方法**
+>
+>   | Modifier | Method and Description                                       |
+>   | :------: | ------------------------------------------------------------ |
+>   |   int    | read() ： 从该输入流读取下一个数据字节                       |
+>   |   int    | read(byte[] b):从该输入流读取最多byte.length个字节的数据到字节数组 |
+>   |   int    | read(byte[] b,int off,int len)：从该输入流读取最多len个字节的数据到字节数组 |
+
+
+
+####2、使用FileInputStream进行文件读操作
+
+>```java
+>package Demo;
+>
+>import java.io.FileInputStream;
+>import java.io.FileNotFoundException;
+>import java.io.IOException;
+>
+>/**
+> * @Author AlexanderBai
+> * @data 2019/3/18 9:24
+> */
+>public class TestFileInputStream {
+>    public static void main(String[] args) {
+>        int b=0;//用b来装掉用read()方法返回时的整数
+>        int num=0;//用num来记录读取的字节数
+>        FileInputStream fileInputStream=null;
+>        try {
+>            fileInputStream = new FileInputStream("G:\\Demo.java");
+>        } catch (FileNotFoundException e) {
+>            System.out.println("系统找不到指定的文件!!!");
+>            System.exit(-1);//系统非正常退出
+>        }
+>        try {
+>            while ((b=fileInputStream.read()) != -1) {
+>                System.out.print((char)b);//把使用数字表示的汉字和字符转换成字符输出
+>                num++;
+>            }
+>            fileInputStream.close();
+>            System.out.println();
+>            System.out.println("总共读取了"+num+"字节");
+>        } catch (IOException e) {
+>            System.out.println("文件读取错误！！！");
+>        }
+>    }
+>}
+>```
+>
+>- **观察上面的运行结果，可以发现中文部分出现乱码，是因为文件以字节流的形式读取，而在Java中中文占两个字节，故出现乱码**
+
+#### 3、使用FileOutputStream对文件进行写操作
+
+> - 对文件进行复制
+>
+>   ```java
+>   package Demo;
+>   
+>   import java.io.FileInputStream;
+>   import java.io.FileNotFoundException;
+>   import java.io.FileOutputStream;
+>   import java.io.IOException;
+>   
+>   /**
+>    * @Author AlexanderBai
+>    * @data 2019/3/18 10:39
+>    */
+>   public class TestFileOutputStream {
+>       public static void main(String[] args) {
+>           int b=0;//用b来装掉用read()方法返回时的整数
+>           int num=0;//用num来记录读写的字节数
+>           FileInputStream fileInputStream=null;
+>           FileOutputStream fileOutputStream=null;
+>           try {
+>               fileInputStream = new FileInputStream("G:\\Demo.java");
+>               fileOutputStream= new FileOutputStream("G:\\Test.java");//直接在盘符上写，系统自动创建
+>               /*
+>               *fileOutputStream= new FileOutputStream("G:\\Demo\\Test.java");
+>               *不是直接在盘符上进行的写操作，首先要确认目录是否存在，
+>               * 若不存在则会抛出FileNotFoundException
+>               **/
+>   
+>           } catch (FileNotFoundException e) {
+>               System.out.println("系统找不到指定的文件!!!");
+>               System.exit(-1);//系统非正常退出
+>           }
+>           try {
+>               while ((b=fileInputStream.read() )!= -1) {
+>                       fileOutputStream.write(b);
+>                   System.out.print((char)b);
+>                   num++;
+>               }
+>               fileInputStream.close();
+>               System.out.println();
+>               System.out.println("总共写入了"+num+"字节");
+>               System.out.println("Demo.java文件里面的内容已经成功复制到文件Test.java里面");
+>           } catch (IOException e) {
+>               System.out.println("文件读取错误！！！");
+>           }
+>   
+>       }
+>   }
+>   ```
+>
+> - 上面的程序除了对文件进行读写之外，还在控制台打印，通过观察可以发现控制台上的中文乱码，而文件Test.java打开之后中文并没有乱码，**可能**是记事本做了优化，但`FileOutputStream`依然是以字节为单位进行写操作
+
+
+
+
 
 ### 十、处理流讲解
 
