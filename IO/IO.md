@@ -338,6 +338,7 @@
 >              while ((b=fileReader.read())!= -1) {
 >                  fileWriter.append((char)b);
 >              }
+>              //对文件进行操作是必须关闭资源，不然可能看不到写出的文件，也可以调用刷新方法
 >              //fileWriter.flush();
 >              fileWriter.close();
 >          } catch (FileNotFoundException e) {
@@ -349,9 +350,7 @@
 >  }
 >  ```
 >
->  
->
->
+>- **对文件进行操作是必须关闭资源，不然可能看不到写出的文件，也可以调用刷新方法**
 
 
 
