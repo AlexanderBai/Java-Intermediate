@@ -311,7 +311,47 @@
 >
 > - 上面的程序除了对文件进行读写之外，还在控制台打印，通过观察可以发现控制台上的中文乱码，而文件Test.java打开之后中文并没有乱码，**可能**是记事本做了优化，但`FileOutputStream`依然是以字节为单位进行写操作
 
+### 4、使用字符流对文件进行读写
 
+>- 对文件进行复制
+>
+>  ```java
+>  package Demo;
+>  
+>  import java.io.*;
+>  
+>  /**
+>   * @Author AlexanderBai
+>   * @data 2019/3/18 21:09
+>   */
+>  public class TestFilelWriter {
+>      public static void main(String[] args) {
+>          File file = new File("");
+>          int b=0;
+>          FileReader fileReader=null;
+>          FileWriter fileWriter=null;
+>          try {
+>              fileReader = new FileReader("G:" + File.separator + "Demo.java");
+>              fileWriter = new FileWriter("G:" + File.separator + "demo.txt");
+>    //若不存在，系统自动创建，且必须是直接在盘符上，负责抛出FileNotFoundException异常
+>  /*如：fileWriter = new FileWriter("G:" + File.separator +"d"+File.separator +"demo.txt");（这种写法必须保证目录d存在）*/
+>              while ((b=fileReader.read())!= -1) {
+>                  fileWriter.append((char)b);
+>              }
+>              //fileWriter.flush();
+>              fileWriter.close();
+>          } catch (FileNotFoundException e) {
+>              e.printStackTrace();
+>          } catch (IOException e) {
+>              e.printStackTrace();
+>          }
+>      }
+>  }
+>  ```
+>
+>  
+>
+>
 
 
 
