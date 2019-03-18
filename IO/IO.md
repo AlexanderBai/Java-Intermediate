@@ -302,7 +302,7 @@
 >               System.out.println("总共写入了"+num+"字节");
 >               System.out.println("Demo.java文件里面的内容已经成功复制到文件Test.java里面");
 >           } catch (IOException e) {
->               System.out.println("文件读取错误！！！");
+>               System.out.println("文件复制失败！");
 >           }
 >   
 >       }
