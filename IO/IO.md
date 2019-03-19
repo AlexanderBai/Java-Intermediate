@@ -151,15 +151,17 @@
 - **字节流：**以单个字节的方式进行读写
 - **字符流：**以单个字符为单位进行读取，
 - java中一个英文字符占一个字节，一个中文字符占两个字节
-- **在开发中输入输出流是站在程序的角度而言**
+- **在开发中输入输出是站在程序的角度而言**
 
 ### 四、节点流与数据流
+
+####1、节点流与处理流的关系
 
 > - **节点流：**指**直接**对指定的数据源进行操作
 > - **处理流：**是指连接在**已有的流（节点流或数据流）**之上，为程序提供更为强大的读写功能的流。这里用**连接来**形容流是因为数据源与程序之间必须先建立一个用于数据传输的通道才能进行数据的传输（**如：HTTP连接**）
 > - ![1552826167246](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1552826167246.png)
 
-​								
+####2、节点流						
 
 >​                                                                            **节点流**
 >
@@ -172,7 +174,7 @@
 
 
 
-
+####3、处理流
 
 >​                                                                        **处理流**
 >
@@ -189,21 +191,57 @@
 
 ### 五、InputSteam（输入流）
 
+####1、InputStream相关流
+
+> - 继承自InputStream的流都是一字节（8位）为单位进行流的输入
 > - 深色为节点流
 >
 > ![1552922903338](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1552922903338.png)
 
+#### 2、InputStr常用方法
 
+![1553005288438](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1553005288438.png)
 
 ### 六、OutputSteam（输出流）
 
+####1、OutputStream相关流
+
+> - 与OutputStream相关的流都是以字节为单位进行写操作
 > - 深色为节点流
 >
->   ![1552923263829](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1552923263829.png)
+> ![1552923263829](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1552923263829.png)
+
+#### 2、OutputStream常用方法
+
+![1553005742022](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1553005742022.png)
 
 ### 七、Reader流
 
+####1、与Reader相关的流
+
+> - 与Reader相关的流都是以字符（16位）我单位进行读操作
+>
+> - 深色为节点流
+>
+>   ![1552972215241](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1552972215241.png)
+
+#### 2、Reader常用方法
+
+![1553006082799](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1553006082799.png)
+
 ### 八、Write流
+
+#### 1、与Writer有关的流
+
+> - 与Writer有关的流都是以字符为单位进行写操作
+>
+> - 深色为节点流
+>
+>   ![1552972573850](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1552972573850.png)
+
+#### 2、Writer 常用方法
+
+![1553006491083](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1553006491083.png)
 
 ### 九、节点流讲解
 
@@ -368,7 +406,123 @@
 
 #### 1、缓冲流
 
-####2、转换流
+![1552973777091](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1552973777091.png)
+
+> ```java
+> package Demo;
+> 
+> import java.io.*;
+> 
+> /**
+>  * @Author AlexanderBai
+>  * @data 2019/3/19 13:39
+>  */
+> public class TestBufferStream {
+>     public static void main(String[] args) {
+>         int b=0;
+>         FileInputStream fileInputStream =null;
+>         BufferedInputStream bufferedInputStream=null;
+>         try {
+>             //在FileInputStream上套接一个缓冲
+>             fileInputStream = new FileInputStream("G:" + File.separator + "Demo.java");
+>             bufferedInputStream = new BufferedInputStream(fileInputStream);
+>             bufferedInputStream.mark(100);//在地100个字符处做一个标记
+> 
+>             for (int i = 0; i < 50&&(b=bufferedInputStream.read())!=-1; i++) {
+>                System.out.print((char) b);
+>             }
+> 
+>             System.out.println("--------------------------------------------------------------------");
+>             //重新读取
+>             bufferedInputStream.reset();
+>             try {
+>                 while ((b=bufferedInputStream.read() )!= -1) {
+>                     System.out.print((char) b);
+>                 }
+>             } catch (IOException e) {
+>                 e.printStackTrace();
+>             }
+>         } catch (FileNotFoundException e) {
+>             e.printStackTrace();
+>         } catch (IOException e) {
+>             e.printStackTrace();
+>         }
+>     }
+> 
+> }
+> ```
+>
+> - **mark(int readlimit):**类似于书签，用于标记，为reset掉用做左后标记
+>
+>   ```java
+>    // @param   readlimit   the maximum limit of bytes that can be read before
+>    //                    the mark position becomes invalid.
+>   ```
+>
+> - **reset():**调用此方法之后可以重新读取读过的数据
+>
+>   ```java
+>   /** If <code>markpos</code> is <code>-1</code>
+>   * (no mark has been set or the mark has been
+>   * invalidated), an <code>IOException</code>
+>   * is thrown. Otherwise, <code>pos</code> is
+>   * set equal to <code>markpos</code>.
+>   ***/
+>   ```
+>
+> - 官方说是若读取的数据超过了mark标记的位置，则调用reset方法后无效。但在实际的开发中可以看出，当缓冲区已满溢出时，调用reset方法才无效。所以实际上reset是否有效取决于缓冲区的状态，并不是readlimit的值
+
+> - **BufferedWriter和BufferedReader**测试
+>
+> ```java
+> package Demo;
+> 
+> import java.io.*;
+> 
+> /**
+>  * @Author AlexanderBai
+>  * @data 2019/3/19 17:03
+>  */
+> public class TestBufferStream1 {
+>     public static void main(String[] args) {
+>         int b;
+>         String string=null;
+>         String string1=null;
+>         FileWriter fileWriter=null;
+>         FileReader fileReader = null;
+>         BufferedWriter bufferedWriter=null;
+>         BufferedReader bufferedReader=null;
+> 
+>         try {
+>             fileWriter = new FileWriter("G:" + File.separator + "new.txt");
+>             bufferedWriter = new BufferedWriter(fileWriter);
+> 
+>             for (int i = 0; i < 500; i++) {
+>                 string = String.valueOf(Math.random());
+>                 bufferedWriter.write(string);
+>                 bufferedWriter.newLine();
+>                 System.out.println(string);
+>             }
+>             bufferedWriter.flush();//必须对缓冲流进行刷新，不然报错
+> 
+>             fileReader = new FileReader("G:" + File.separator + "new.txt");
+>             bufferedReader = new BufferedReader(fileReader);
+>             while ((string1=bufferedReader.readLine())!=null) {
+>                 System.out.println(string1);
+>             }
+>             //按顺序进行关闭
+>             fileWriter.close();
+>             bufferedWriter.close();
+>             fileReader.close();
+>             bufferedReader.close();
+>         } catch (IOException e) {
+>             e.printStackTrace();
+>         }
+>     }
+> }
+> ```
+
+#### 2、转换流
 
 ####3、数据流
 
