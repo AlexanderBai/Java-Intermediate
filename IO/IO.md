@@ -524,9 +524,143 @@
 
 #### 2、转换流
 
+- 输入
+
+  - **字节流到字符流：**InputStreamReader
+
+    > ```java
+    > An InputStreamReader is a bridge from byte streams to character streams
+    > 																	JDK 1.8
+    > ```
+
+  - 字符流到字节流
+
+- 输出 
+
+  - **字节流到字符流：**
+
+  - **字符流到字节流:**OutputStreamWriter 
+
+    > ```java
+    > An OutputStreamWriter is a bridge from character streams to byte streams: 
+    > 
+    > 																JDK 1.8
+    > 
+    > ```
+
+    
+
 ####3、数据流
 
+- DataOutputStream和DataInputStream用于实现与平台无关的数据操作流
+
+![1553076313885](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1553076313885.png)
+
+```java
+package Demo;
+
+import java.io.*;
+
+/**
+ * @Author AlexanderBai
+ * @data 2019/3/20 20:20
+ */
+public class TestDataStream {
+    public static void main(String[] args) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        //在调用构造方法时，在内存中创建一个byteArray自己数组
+        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+        //在输出流的外面套上一层数据流，用于读取int、double等类型的数据
+        try {
+            //把数据写入到byteArray中
+            dataOutputStream.writeDouble(Math.random());
+            dataOutputStream.writeBoolean(true);
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+            System.out.println("byteArrayInputStream.available() = " + byteArrayInputStream.available());
+            DataInputStream dataInputStream = new DataInputStream(byteArrayInputStream);
+            //先写进去的先读出来
+            System.out.println("dataInputStream.readDouble() = " + dataInputStream.readDouble());
+            System.out.println("dataInputStream.readBoolean() = " + dataInputStream.readBoolean());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
 ####4、打印流
+
+- **字节打印流**
+
+  OutputStream本身值支持字节数据操作，PrintStream是OutputStream的升级版，可以打印任何的数据类型，如：小数，整数，字符串等。
+
+  ```java
+  package Demo;
+  
+  import java.io.*;
+  
+  /**
+   * @Author AlexanderBai
+   * @data 2019/3/20 20:57
+   */
+  public class TestPrintStream {
+      public static void main(String[] args) {
+          PrintStream printStream=null;
+          try {
+              //在输出流的外面套一层打印流，用啦控制打印输出
+              printStream = new PrintStream(new FileOutputStream("G:" + File.separator + "log.txt"));
+              if (printStream != null) {
+                  System.setOut(printStream);
+                  //System.setIn(InputStream in);此方法改变了输出窗口，默认的输出窗口时命令行控制台，这里更改为文件
+                  //PrintStream err=System.err;此方法用于打印错误信息
+                  //InputStream inputStream=System.in;此方法用于获取键盘输入
+                  printStream.print("Hello");
+                  printStream.print(88);
+                  printStream.print(false);
+                  printStream.print(args);
+                  printStream.print("1+1=" + 2);
+              }
+              printStream.close();
+          } catch (FileNotFoundException e) {
+              e.printStackTrace();
+          }
+      }
+  }
+  ```
+
+- 字符打印流：PrintWriter
+
+  ```java
+  package Demo;
+  
+  import java.io.File;
+  import java.io.FileWriter;
+  import java.io.IOException;
+  import java.io.PrintWriter;
+  
+  /**
+   * @Author AlexanderBai
+   * @data 2019/3/20 20:57
+   */
+  public class TestPrintStream {
+      public static void main(String[] args) {
+          PrintWriter printWriter=null;
+          try {
+              printWriter = new PrintWriter(new FileWriter("G:" + File.separator + "log.txt"));
+              printWriter.write(1);
+              printWriter.write("hello");
+              printWriter.print(0.1);
+              printWriter.print('c');
+              printWriter.print("world".getBytes());
+              printWriter.print("图图".toCharArray());
+          } catch (IOException e) {
+              e.printStackTrace();
+          }
+      }
+  }
+  ```
+
+  
 
 ####5、对象流
 
