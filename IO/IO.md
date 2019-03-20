@@ -590,6 +590,8 @@ public class TestDataStream {
 
 ####4、打印流
 
+![1553091822340](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1553091822340.png)
+
 - **字节打印流**
 
   OutputStream本身值支持字节数据操作，PrintStream是OutputStream的升级版，可以打印任何的数据类型，如：小数，整数，字符串等。
@@ -660,9 +662,112 @@ public class TestDataStream {
   }
   ```
 
-  
 
 ####5、对象流
+
+**对象序列化是将对象变为二进制数据流的一种方法，通过对象序列化可以方便地实现对象的传输或存储**
+
+> - 要实现对象的序列化必须先实现**Serializable**接口
+> - 一个类中的方法是所有对象共有，只有属性和其值是属于对象自己，所以**对象的序列化和反序列化都是对对象的属性而言**
+> - 由**transient**关键字标识的属性不会被序列化
+
+>```java
+>package Demo;
+>
+>import java.io.*;
+>
+>/**
+> * @Author AlexanderBai
+> * @data 2019/3/20 21:41
+> */
+>class Person implements Serializable {//实现了Serializable接口的类的对象允许序列化
+>    private int id;
+>    private String name;
+>    private transient boolean flag=true;//transient关键字表示该对象的该属性在序列化是不考虑
+>
+>    public void setId(int id) {
+>        this.id = id;
+>    }
+>
+>    public void setName(String name) {
+>        this.name = name;
+>    }
+>
+>    public void setFlag(boolean flag) {
+>        this.flag = flag;
+>    }
+>
+>    public int getId() {
+>        return id;
+>    }
+>
+>    public String getName() {
+>        return name;
+>    }
+>
+>    public boolean isFlag() {
+>        return flag;
+>    }
+>}
+>public class TestObjectStream {
+>    public static void main(String[] args) {
+>        Person person=new Person();
+>        person.setId(1);
+>        person.setName("AlexanderBai");
+>        person.setFlag(true);
+>        ObjectInputStream objectInputStream=null;
+>        ObjectOutputStream objectOutputStream=null;
+>        try {
+>            //序列化
+>            objectOutputStream = new ObjectOutputStream(new FileOutputStream("G:" + File.separator + "test.txt"));
+>            objectOutputStream.writeObject(person);
+>
+>            //反序列化,使用强制类型转换为指定的类型
+>            objectInputStream = new ObjectInputStream(new FileInputStream("G:" + File.separator + "test.txt"));
+>            try {
+>                Person person1= (Person) objectInputStream.readObject();
+>                System.out.println("person1.getId() = " + person1.getId());
+>                System.out.println("person1.getName() = " + person1.getName());
+>                System.out.println("person1.isFlag() = " + person1.isFlag());
+>            } catch (ClassNotFoundException e) {
+>                e.printStackTrace();
+>            }
+>        } catch (IOException e) {
+>            e.printStackTrace();
+>        }
+>    }
+>}
+>```
+>
+>>- 运行结果
+>>
+>>- ```java
+>>  person1.getId() = 1
+>>  person1.getName() = AlexanderBai
+>>  person1.isFlag() = false
+>>  ```
+>>
+>>  观察可以发现flag输出flase,是因为java默认Boolean值为flase.可以忍写一个Demo进行测试，无需死记
+>>
+>>  ```java
+>>  package Demo;
+>>  
+>>  /**
+>>   * @Author AlexanderBai
+>>   * @data 2019/3/20 22:38
+>>   */
+>>  public class Test {
+>>      boolean f;
+>>      public static void main(String[] args) {
+>>          Test test=new Test();
+>>          System.out.println("f = " + test.f);
+>>      }
+>>  }
+>>  ```
+
+
+
+
 
 
 
