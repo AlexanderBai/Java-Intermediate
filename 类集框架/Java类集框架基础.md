@@ -79,7 +79,11 @@
 
 #### 2、属性类Properties
 
+- Properties一般用于配置文件，以key-value的结构存储
 
+- 如常用的有关`jdbc`连接数据库的配置
+
+  
 
 ### 十、demo
 
