@@ -10,13 +10,13 @@
 
 #### 2、操作单值对象的集合-Collection家装
 
-![1553519024231](G:\Java-Intermediate\类集框架\assets\1553519024231.png)
+![1553519902773](assets/1553519902773.png)
 
 ####3、操作二元偶对象的集合-Map家族
 
 
 
-![1553519436682](G:\Java-Intermediate\类集框架\assets\1553519436682.png)
+![1553519880967](assets/1553519880967.png)
 
 
 ### 二、Collection接口
@@ -56,8 +56,6 @@
 #### 1、Stack类
 
 #### 2、属性类Properties
-
-![鬼刀小憩4k高清壁纸](assets/鬼刀小憩4k高清壁纸.jpg)
 
 ### 十、demo
 
