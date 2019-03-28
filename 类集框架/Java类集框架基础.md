@@ -43,30 +43,13 @@
 >
 >   - 返回对象的哈希码值
 >
-> 
->
 >   - ```java
->        /**
->        *This method is supported for the benefit of hash tables such as those *provided by java.util.HashMap
->        *支持此方法是为了哈希表的优势，例如由HahMap提供的哈希表
->        **/
->        ```
->    ```
-> 
->    ```
->
-> ```
-> 
-> ```
->
+>     /**
+>     *This method is supported for the benefit of hash tables such as those *provided by java.util.HashMap
+>     *支持此方法是为了哈希表的优势，例如由HahMap提供的哈希表
+>     **/
+>     ```
 >   - **Java中`HashCode()`方法就是根据一定的规则将于对象相关的信息（比如对象的存储地址、对象的字段等）映射成一个值，这个数值就是哈希码值（也叫散列码值）**
-> ```
-> 
-> ```
->
-> ```
-> 
-> ```
 
 - **Comparable接口：**
   - 内部比较器，实现了此接口的类可与自身对象进行比较，依赖于CompareTo()方法的实现，CompareTo()方法有三个返回值
