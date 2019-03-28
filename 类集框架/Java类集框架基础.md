@@ -46,18 +46,22 @@
 > 
 >
 >   - ```java
->       /**
->          *This method is supported for the benefit of hash tables such as those *provided by java.util.HashMap
->          *支持此方法是为了哈希表的优势，例如由HahMap提供的哈希表
->          **/
->       ```
->   ```
+>        /**
+>        *This method is supported for the benefit of hash tables such as those *provided by java.util.HashMap
+>        *支持此方法是为了哈希表的优势，例如由HahMap提供的哈希表
+>        **/
+>        ```
+>    ```
 > 
->   ```
+>    ```
 >
 > ```
 > 
+> ```
+>
 >   - **Java中`HashCode()`方法就是根据一定的规则将于对象相关的信息（比如对象的存储地址、对象的字段等）映射成一个值，这个数值就是哈希码值（也叫散列码值）**
+> ```
+> 
 > ```
 >
 > ```
@@ -135,7 +139,7 @@
 >
 > - **`LinkedList`:实现链表结构，即实现了`List`接口又实现了`Queue`接口**
 
-##### 1.1 、ArrayList
+##### （1）、ArrayList
 
 - ArrayList是数组结构
 
@@ -267,7 +271,7 @@ public class TestList {
 }
 ```
 
-#####1.2、Vector
+#####（2）、Vector
 
 - 用法与ArrayList相似
 
@@ -288,7 +292,7 @@ public class TestList {
 }
 ```
 
-#####1.3、LinkedList
+#####（3）、LinkedList
 
 - LinkedList是链表结构,实现了**Queue（队列）**接口
 
@@ -848,11 +852,417 @@ public class TestList {
 
 ###七、Map接口
 
+- 实际上Map不是一个集合，而是一个集合<key>到另一个集合<value>的映射，即Entry<key,value>.
 
+- Entry是一个Map中的接口，用来存储实际的数据，当我们调用Map的put()方法来存储数据，其实是把数据放入Entry中。
+
+  ~~~
+  interface Entry<K,V> 
+  ~~~
+
+  ![1553735515843](assets/1553735515843.png)
+
+
+
+#### 1、Map常用的实现类
+
+- ~~~java
+  public class HashMap<K,V> 
+  	extends AbstractMap<K,V>
+      	implements Map<K,V>, Cloneable, Serializable
+  ~~~
+
+- >```java
+  >   public class TreeMap<K,V>
+  >   extends AbstractMap<K,V>
+  >    	implements NavigableMap<K,V>, Cloneable, java.io.Serializable
+  >```
+  >
+  >```java
+  >public interface NavigableMap<K,V> extends SortedMap<K,V>
+  >```
+  >
+  >```java
+  >public interface SortedMap<K,V> extends Map<K,V>
+  >```
+
+  
+
+- ```java
+  public class LinkedHashMap<K,V>
+      extends HashMap<K,V>
+      	implements Map<K,V>
+  ```
+
+- ```java
+  public class ConcurrentHashMap<K,V>
+  	extends AbstractMap<K,V> 
+  		implements ConcurrentMap<K,V>, Serializable
+  ```
+
+  
+
+##### （1）、HashMap
+
+- 无序存放，key不允许重复，允许为null
+
+- 与之类似的还有HashTable（也是Map的实现类），**已过时**
+
+  ```java
+  package com.alexanderbai.map;
+  
+  import java.util.*;
+  
+  /**
+   * @Author AlexanderBai
+   * @data 2019/3/28 8:52
+   */
+  public class TestMap {
+      public static void main(String[] args) {
+  
+          Map<Integer, String> map = new HashMap<>();
+          map.put(1,"AlexanderBai" );
+          map.put(2, "xiaobai");
+          map.put(3, "dalao");
+  
+          System.out.print("通过key获取value值:");
+          System.out.println("map.get(2) = " + map.get(2));
+  
+          System.out.print("以set集合的方式返回map集合:");
+          System.out.println(map.entrySet());
+  
+          System.out.print("判断是否含有指定的key:");
+          if (map.containsKey(3)) {
+              System.out.println("key=3,value=" + map.get(3));
+          } else {
+              System.out.println("搜索的key不存在");
+          }
+  
+          System.out.print("判断是否含有指定的value值:");
+          if (map.containsValue("boss")) {
+              System.out.println("搜索的value存在");
+          } else {
+              System.out.println("搜索的value不存在");
+          }
+  
+          System.out.println("以set的方式返回所有的key，并输出全部的key");
+          Set<Integer> keys=map.keySet();
+          Iterator<Integer> integerIterator=keys.iterator();
+          while (integerIterator.hasNext()) {
+              System.out.print(integerIterator.next()+"、");
+          }
+  
+          System.out.println();
+  
+          System.out.println("以Collection的方式返回value，并输出全部的value");
+          Collection<String> values=map.values();
+          Iterator<String> iterator=values.iterator();
+          while (iterator.hasNext()) {
+              System.out.print(iterator.next()+"、");
+          }
+          
+          System.out.println();
+  
+          System.out.println("输出map集合:");
+          Set<Integer> keys1=map.keySet();
+          Iterator<Integer> integerIterator1=keys.iterator();
+          while (integerIterator1.hasNext()) {
+              Integer integer=integerIterator1.next();
+              System.out.println("key="+integer+",value="+map.get(integer));
+          }
+      }
+  }
+  ```
+
+- 运行结果
+
+> ```java
+> 通过key获取value值:map.get(2) = xiaobai
+> 以set集合的方式返回map集合:[1=AlexanderBai, 2=xiaobai, 3=dalao]
+> 判断是否含有指定的key:key=3,value=dalao
+> 判断是否含有指定的value值:搜索的value不存在
+> 以set的方式返回所有的key，并输出全部的key
+> 1、2、3、
+> 以Collection的方式返回value，并输出全部的value
+> AlexanderBai、xiaobai、dalao、
+> 输出map集合:
+> key=1,value=AlexanderBai
+> key=2,value=xiaobai
+> key=3,value=dalao
+> ```
+
+##### （2）、TreeMap
+
+- 实现了Sorted接口，属于可以排序的集合，按集合中的key进行排序，元素不允许重复
+
+  ```java
+  package com.alexanderbai.map;
+  
+  import java.util.*;
+  
+  /**
+   * @Author AlexanderBai
+   * @data 2019/3/28 8:52
+   */
+  
+  class Person {
+      private String name;
+      private int age;
+  
+      public Person() {
+      }
+  
+      public Person(String name, int age) {
+          this.name = name;
+          this.age = age;
+      }
+  
+      public String getName() {
+          return name;
+      }
+  
+      public void setName(String name) {
+          this.name = name;
+      }
+  
+      public int getAge() {
+          return age;
+      }
+  
+      public void setAge(int age) {
+          this.age = age;
+      }
+  
+      @Override
+      public String toString() {
+          return "Person{" +
+                  "name='" + name + '\'' +
+                  ", age=" + age +
+                  '}';
+      }
+  }
+  
+  public class TestMap {
+      public static void main(String[] args) {
+          Map<Integer, String> map = new TreeMap<>();
+          map.put(2, "AlexanderBai");
+          map.put(1, "xiaobai");
+          map.put(0, "boss");
+  
+          System.out.println(((TreeMap<Integer, String>) map).firstKey());
+          System.out.println(((TreeMap<Integer, String>) map).lastKey());
+  
+          System.out.println(((TreeMap<Integer, String>) map).firstEntry());
+          System.out.println(((TreeMap<Integer, String>) map).lastEntry());
+  
+          Set<Integer> integerSet = map.keySet();
+          Iterator<Integer> integerIterator = integerSet.iterator();
+          while (integerIterator.hasNext()) {
+              Integer integer = integerIterator.next();
+              System.out.println("key=" + integer + ",value=" + map.get(integer));
+          }
+  
+          Map<String, Person> map1 = new TreeMap<>();
+          map1.put("B", new Person("AlexanderBai",20));
+          map1.put("C", new Person("xiaobai", 18));
+          map1.put("A", new Person("boss", 38));
+          System.out.println(((TreeMap<String, Person>) map1).firstKey());
+          System.out.println(((TreeMap<String, Person>) map1).lastKey());
+  
+          System.out.println(((TreeMap<String , Person>) map1).firstEntry());
+          System.out.println(((TreeMap<String, Person>) map1).lastEntry());
+  
+          Set<String> stringSet = map1.keySet();
+          Iterator<String> stringIterator =stringSet.iterator();
+          while (stringIterator.hasNext()) {
+              String str= stringIterator.next();
+              System.out.println("key=" + str + ",value=" + map1.get(str));
+          }
+      }
+  }
+  ```
+
+- 运行结果
+
+  > ```
+  > 0
+  > 2
+  > 0=boss
+  > 2=AlexanderBai
+  > key=0,value=boss
+  > key=1,value=xiaobai
+  > key=2,value=AlexanderBai
+  > A
+  > C
+  > A=Person{name='boss', age=38}
+  > C=Person{name='xiaobai', age=18}
+  > key=A,value=Person{name='boss', age=38}
+  > key=B,value=Person{name='AlexanderBai', age=20}
+  > key=C,value=Person{name='xiaobai', age=18}
+  > ```
+- 从运行结果可以看出，TreeMap实现了Map集合元素的排序，上述以key作为排序对象
+
+#####（3）、LinkedHashMap
+
+- 允许为null，插入有序
+
+- 是HashMap的子类
+
+```java
+public class LinkedHashMap<K,V>
+    extends HashMap<K,V>
+    implements Map<K,V>
+```
+
+- 大多使用HashMap的API，只不过重写了部分方法，所以用法与HashMap类似
+
+- 简单来说就是Map集合的哈希表和链表（包括双向链表）的实现
+
+  ```java
+  public class TestMap {
+      public static void main(String[] args) {
+          Map<Integer, String> map = new LinkedHashMap<>();
+          map.put(1, "boss");
+          map.put(2, "xiaobai");
+          map.put(3, "AlexanderBai");
+  
+          System.out.print("通过key获取value值:");
+          System.out.println("map.get(2) = " + map.get(2));
+  
+          System.out.print("以set集合的方式返回map集合:");
+          System.out.println(map.entrySet());
+  
+          System.out.print("判断是否含有指定的key:");
+          if (map.containsKey(3)) {
+              System.out.println("key=3,value=" + map.get(3));
+          } else {
+              System.out.println("搜索的key不存在");
+          }
+  
+          System.out.print("判断是否含有指定的value值:");
+          if (map.containsValue("boss")) {
+              System.out.println("搜索的value存在");
+          } else {
+              System.out.println("搜索的value不存在");
+          }
+  
+          System.out.println("以set的方式返回所有的key，并输出全部的key");
+          Set<Integer> keys=map.keySet();
+          Iterator<Integer> integerIterator=keys.iterator();
+          while (integerIterator.hasNext()) {
+              System.out.print(integerIterator.next()+"、");
+          }
+  
+          System.out.println();
+  
+          System.out.println("以Collection的方式返回value，并输出全部的value");
+          Collection<String> values=map.values();
+          Iterator<String> iterator=values.iterator();
+          while (iterator.hasNext()) {
+              System.out.print(iterator.next()+"、");
+          }
+  
+          System.out.println();
+  
+          System.out.println("输出map集合:");
+          Set<Integer> keys1=map.keySet();
+          Iterator<Integer> integerIterator1=keys.iterator();
+          while (integerIterator1.hasNext()) {
+              Integer integer=integerIterator1.next();
+              System.out.println("key="+integer+",value="+map.get(integer));
+          }
+      }
+  }
+  ```
+
+
+
+##### （4）、ConcurrentHashMap
+
+- key和value都不能为空
+- 一般用于高并发和大数统计
+
+```java
+public class TestMap {
+    public static void main(String[] args) {
+        Map<Integer, String> map = new ConcurrentHashMap<>();
+        map.put(1, "c");
+        map.put(2, "b");
+        map.put(3, "a");
+
+        map.put(6, "boss");
+        map.put(5, "xiaobai");
+        map.put(4, "AlexanderBai");
+
+        System.out.print("通过key获取value值:");
+        System.out.println("map.get(2) = " + map.get(2));
+
+        System.out.print("以set集合的方式返回map集合:");
+        System.out.println(map.entrySet());
+
+        System.out.print("判断是否含有指定的key:");
+        if (map.containsKey(3)) {
+            System.out.println("key=3,value=" + map.get(3));
+        } else {
+            System.out.println("搜索的key不存在");
+        }
+
+        System.out.print("判断是否含有指定的value值:");
+        if (map.containsValue("boss")) {
+            System.out.println("搜索的value存在");
+        } else {
+            System.out.println("搜索的value不存在");
+        }
+
+        System.out.println("以set的方式返回所有的key，并输出全部的key");
+        Set<Integer> keys=map.keySet();
+        Iterator<Integer> integerIterator=keys.iterator();
+        while (integerIterator.hasNext()) {
+            System.out.print(integerIterator.next()+"、");
+        }
+
+        System.out.println();
+
+        System.out.println("以Collection的方式返回value，并输出全部的value");
+        Collection<String> values=map.values();
+        Iterator<String> iterator=values.iterator();
+        while (iterator.hasNext()) {
+            System.out.print(iterator.next()+"、");
+        }
+
+        System.out.println();
+
+        System.out.println("输出map集合:");
+        Set<Integer> keys1=map.keySet();
+        Iterator<Integer> integerIterator1=keys.iterator();
+        while (integerIterator1.hasNext()) {
+            Integer integer=integerIterator1.next();
+            System.out.println("key="+integer+",value="+map.get(integer));
+        }
+    }
+}
+```
 
 ### 八、SortedMap接口
 
+```java
+public interface SortedMap<K,V> extends Map<K,V>
+```
 
+- SortedMap是Map的直接子类，是要于排序的接口，实现此接口的子类都属于排序的子类，如：**TreeMap**
+
+> ```java
+> public class TreeMap<K,V>
+>     extends AbstractMap<K,V>
+>     	implements NavigableMap<K,V>, Cloneable, java.io.Serializable
+> ```
+>
+> ```java
+> public interface NavigableMap<K,V> extends SortedMap<K,V>
+> ```
+
+- TreeMap是SortedMap的实现类，SortedMap的使用见TreeMap的使用方法
+- 同时也可以类比SortedSet的使用
 
 ### 九、其他集合类
 
@@ -956,7 +1366,7 @@ public class LinkedList<E>
 
 #####（1）、获取JVM属性
 
-```java
+​```java
 package com.alexanderbai.collection;
 
 import java.util.Properties;
@@ -1022,7 +1432,7 @@ public class PropertiesFileReadTest {
 #####（3）、读取有关jdbc的配置属性
 
 >- 下面两个文件都在`com.alexanderbai.dbutil`包下
-> - **dbConfig.properties**
+>- **dbConfig.properties**
 >
 >```properties
 >driver=com.mysql.jdbc.Driver
@@ -1050,47 +1460,483 @@ public class PropertiesFileReadTest {
 >public class DBConnectionUtil {
 >
 >public  Connection openConnection() {
->   Properties properties = new Properties();
->   String driver = null;
->   String url = null;
->   String userName = null;
->   String password = null;
->   try {
->       properties.load(
->               this.getClass().getResourceAsStream("dbConfig.properties")
->       );
->   } catch (IOException e) {
->       e.printStackTrace();
->   }
->   driver = properties.getProperty("driver");
->   url = properties.getProperty("url");
->   userName= properties.getProperty("userName");
->   password= properties.getProperty("password");
+>Properties properties = new Properties();
+>String driver = null;
+>String url = null;
+>String userName = null;
+>String password = null;
+>try {
+>  properties.load(
+>          this.getClass().getResourceAsStream("dbConfig.properties")
+>  );
+>} catch (IOException e) {
+>  e.printStackTrace();
+>}
+>driver = properties.getProperty("driver");
+>url = properties.getProperty("url");
+>userName= properties.getProperty("userName");
+>password= properties.getProperty("password");
 >
->   try {
->       Class.forName(driver);
->       return DriverManager.getConnection(url, userName, password);
->   } catch (SQLException e) {
->       e.printStackTrace();
->   } catch (ClassNotFoundException e) {
->       e.printStackTrace();
->   }
->   return null;
+>try {
+>  Class.forName(driver);
+>  return DriverManager.getConnection(url, userName, password);
+>} catch (SQLException e) {
+>  e.printStackTrace();
+>} catch (ClassNotFoundException e) {
+>  e.printStackTrace();
+>}
+>return null;
 >}
 >
 >public static void main(String[] args) {
->   DBConnectionUtil dbConnectionUtil = new DBConnectionUtil();
->   System.out.println("dbConnectionUtil.openConnection() = " + dbConnectionUtil.openConnection());
+>DBConnectionUtil dbConnectionUtil = new DBConnectionUtil();
+>System.out.println("dbConnectionUtil.openConnection() = " + dbConnectionUtil.openConnection());
 >	}
 >}
 >```
 >
->
 
-### 十、demo
+### 十、后言
+
+**以上只是java中集合框架的最基础部分，随着学习的深入，应该进一步学习java集合框架的源码实现，只有弄明白源码，才能真正领悟java类集的联系与区别。***
+
+### 十一、Demo
 
 #### 1、一对多关系
+
+- 以学生和所在的学校为例，一名学生只能在一个学校，而一个学校考研包含多个学生。
+
+- **School.java**
+
+  >```java
+  >package com.alexanderbai.demo;
+  >
+  >import java.util.ArrayList;
+  >import java.util.List;
+  >
+  >/**
+  > * @Author AlexanderBai
+  > * @data 2019/3/28 11:48
+  > */
+  >public class School {
+  >    private String name;
+  >    private List<Student> studentList = null;
+  >
+  >    public School() {
+  >        this.studentList=new ArrayList<>();
+  >    }
+  >
+  >    public School(String name) {
+  >        this();//调用无参构造函数
+  >        this.name = name;
+  >    }
+  >
+  >    public String getName() {
+  >        return name;
+  >    }
+  >
+  >    public void setName(String name) {
+  >        this.name = name;
+  >    }
+  >
+  >    public List<Student> getStudentList() {
+  >        return studentList;
+  >    }
+  >
+  >    public void setStudentList(List<Student> studentList) {
+  >        this.studentList = studentList;
+  >    }
+  >
+  >    @Override
+  >    public String toString() {
+  >        return "学校名称:" + this.name;
+  >    }
+  >}
+  >```
+
+- **Student.java**
+
+  >```java
+  >package com.alexanderbai.demo;
+  >
+  >/**
+  > * @Author AlexanderBai
+  > * @data 2019/3/28 11:44
+  > */
+  >public class Student {
+  >
+  >    private Integer id;
+  >    private String name;
+  >    private School school;
+  >
+  >    public Student(Integer id, String name) {
+  >        this.id = id;
+  >        this.name = name;
+  >        this.school = school;
+  >    }
+  >
+  >    public Integer getId() {
+  >        return id;
+  >    }
+  >
+  >    public void setId(Integer id) {
+  >        this.id = id;
+  >    }
+  >
+  >    public String getName() {
+  >        return name;
+  >    }
+  >
+  >    public void setName(String name) {
+  >        this.name = name;
+  >    }
+  >
+  >    public School getSchool() {
+  >        return school;
+  >    }
+  >
+  >    public void setSchool(School school) {
+  >        this.school = school;
+  >    }
+  >
+  >    @Override
+  >    public String toString() {
+  >        return "学号：" + this.id + ",姓名" + this.name;
+  >    }
+  >}
+  >```
+
+- **Test.java**
+
+  > ```java
+  > package com.alexanderbai.demo;
+  > 
+  > import java.util.Iterator;
+  > 
+  > /**
+  >  * @Author AlexanderBai
+  >  * @data 2019/3/28 11:54
+  >  */
+  > public class Test {
+  >     public static void main(String[] args) {
+  >         School school = new School("牛逼大学");
+  >         Student student1 = new Student(1, "AlexanderBai");
+  >         Student student2 = new Student(2, "dalao");
+  >         Student student3 = new Student(3, "xiaobai");
+  > 
+  >         //把学生加入到学校中（放入list集合），list是school类的属性
+  >         school.getStudentList().add(student1);
+  >         school.getStudentList().add(student2);
+  >         school.getStudentList().add(student3);
+  > 
+  >         //给学生确定所在的学校
+  >         student1.setSchool(school);
+  >         student2.setSchool(school);
+  >         student3.setSchool(school);
+  > 
+  >         System.out.println(school);
+  >         Iterator<Student> iterable=school.getStudentList().iterator();
+  >         while (iterable.hasNext()) {
+  >             System.out.println("\t|-" + iterable.next());
+  >         }
+  >     }
+  > }
+  > ```
+
+- **运行结果：**
+
+  >```java
+  >学校名称:牛逼大学
+  >	|-学号：1,姓名AlexanderBai
+  >	|-学号：2,姓名dalao
+  >	|-学号：3,姓名xiaobai
+  >```
 
 
 
 ####2、多对多关系
+
+- 以学生和所选课程为例，一名学生可以选多门课程，一门课程可以有多个学生选课。
+
+- **Student.java**
+
+  > ```java
+  > package com.alexanderbai.demo;
+  > 
+  > import java.util.ArrayList;
+  > import java.util.List;
+  > 
+  > /**
+  >  * @Author AlexanderBai
+  >  * @data 2019/3/28 11:44
+  >  */
+  > public class Student {
+  > 
+  >     private Integer id;
+  >     private String name;
+  >     private List<Course> list = null;
+  >     private School school;
+  > 
+  >     public Student() {
+  >         this.list = new ArrayList<>();
+  >     }
+  > 
+  >     public Student(Integer id, String name) {
+  >         this();
+  >         this.id = id;
+  >         this.name = name;
+  >     }
+  > 
+  >     public Integer getId() {
+  >         return id;
+  >     }
+  > 
+  >     public void setId(Integer id) {
+  >         this.id = id;
+  >     }
+  > 
+  >     public String getName() {
+  >         return name;
+  >     }
+  > 
+  >     public void setName(String name) {
+  >         this.name = name;
+  >     }
+  > 
+  >     public School getSchool() {
+  >         return school;
+  >     }
+  > 
+  >     public void setSchool(School school) {
+  >         this.school = school;
+  >     }
+  > 
+  >     public List<Course> getList() {
+  >         return list;
+  >     }
+  > 
+  >     public void setList(List<Course> list) {
+  >         this.list = list;
+  >     }
+  > 
+  >     @Override
+  >     public String toString() {
+  >         return "学号：" + this.id + ",姓名" + this.name;
+  >     }
+  > }
+  > ```
+
+- **School.java**
+
+  > ```java
+  > package com.alexanderbai.demo;
+  > 
+  > import java.util.ArrayList;
+  > import java.util.List;
+  > 
+  > /**
+  >  * @Author AlexanderBai
+  >  * @data 2019/3/28 11:48
+  >  */
+  > public class School {
+  >     private String name;
+  >     private List<Student> studentList = null;
+  >     private List<Course> courseList = null;
+  > 
+  >     public School() {
+  >         this.studentList=new ArrayList<>();
+  >         this.courseList = new ArrayList<>();
+  >     }
+  > 
+  >     public School(String name) {
+  >         this();//调用无参构造函数
+  >         this.name = name;
+  >     }
+  > 
+  >     public String getName() {
+  >         return name;
+  >     }
+  > 
+  >     public void setName(String name) {
+  >         this.name = name;
+  >     }
+  > 
+  >     public List<Student> getStudentList() {
+  >         return studentList;
+  >     }
+  > 
+  >     public void setStudentList(List<Student> studentList) {
+  >         this.studentList = studentList;
+  >     }
+  > 
+  >     public List<Course> getCourseList() {
+  >         return courseList;
+  >     }
+  > 
+  >     public void setCourseList(List<Course> courseList) {
+  >         this.courseList = courseList;
+  >     }
+  > 
+  >     @Override
+  >     public String toString() {
+  >         return "学校名称:" + this.name;
+  >     }
+  > }
+  > ```
+
+- **Courese.java**
+
+  > ```java
+  > package com.alexanderbai.demo;
+  > 
+  > import java.util.ArrayList;
+  > import java.util.List;
+  > 
+  > /**
+  >  * @Author AlexanderBai
+  >  * @data 2019/3/28 12:15
+  >  */
+  > public class Course {
+  >     private Integer No;
+  >     private String name;
+  >     private List<Student> list = null;
+  > 
+  >     public Course() {
+  >         this.list = new ArrayList<>();
+  >     }
+  > 
+  >     public Course(Integer no, String name) {
+  >         this();
+  >         No = no;
+  >         this.name = name;
+  >     }
+  > 
+  >     public Integer getNo() {
+  >         return No;
+  >     }
+  > 
+  >     public void setNo(Integer no) {
+  >         No = no;
+  >     }
+  > 
+  >     public String getName() {
+  >         return name;
+  >     }
+  > 
+  >     public void setName(String name) {
+  >         this.name = name;
+  >     }
+  > 
+  >     public List<Student> getList() {
+  >         return list;
+  >     }
+  > 
+  >     public void setList(List<Student> list) {
+  >         this.list = list;
+  >     }
+  > 
+  >     @Override
+  >     public String toString() {
+  >         return "课程编号：" + this.No + ",课程名称：" + this.name;
+  >     }
+  > }
+  > ```
+
+- **Test.java**
+
+  > ```java
+  > package com.alexanderbai.demo;
+  > 
+  > import java.util.Iterator;
+  > 
+  > /**
+  >  * @Author AlexanderBai
+  >  * @data 2019/3/28 11:54
+  >  */
+  > public class Test {
+  >     public static void main(String[] args) {
+  >         School school = new School("牛逼大学");
+  > 
+  >         Student student1 = new Student(1, "AlexanderBai");
+  >         Student student2 = new Student(2, "dalao");
+  >         Student student3 = new Student(3, "xiaobai");
+  > 
+  >         Course course1 = new Course(1, "java");
+  >         Course course2 = new Course(2, "JavaEE");
+  >         Course course3 = new Course(3, "数据库原理及应用");
+  > 
+  >         //把学生加入到学校中（放入list集合），list是school类的属性
+  >         school.getStudentList().add(student1);
+  >         school.getStudentList().add(student2);
+  >         school.getStudentList().add(student3);
+  > 
+  >         //给学生确定所在的学校
+  >         student1.setSchool(school);
+  >         student2.setSchool(school);
+  >         student3.setSchool(school);
+  > 
+  >         school.getCourseList().add(course1);
+  >         school.getCourseList().add(course2);
+  >         school.getCourseList().add(course3);
+  > 
+  >  //-------------------------------模拟学生选课----------------------------------
+  >         //向课程类添加学生
+  >         course1.getList().add(student1);
+  >         course1.getList().add(student3);
+  > 
+  >         course2.getList().add(student1);
+  >         course2.getList().add(student2);
+  > 
+  >         course3.getList().add(student2);
+  >         course3.getList().add(student3);
+  > 
+  >         //向学生类添加课程
+  >         student1.getList().add(course1);
+  >         student1.getList().add(course3);
+  > 
+  >         student2.getList().add(course1);
+  >         student2.getList().add(course2);
+  > 
+  >         student3.getList().add(course2);
+  >         student3.getList().add(course3);
+  > 
+  >         System.out.println(school);
+  >         Iterator<Student> iterable=school.getStudentList().iterator();
+  >         while (iterable.hasNext()) {
+  >             Student student=iterable.next();
+  >             System.out.println("\t|-" +student);
+  >             Iterator<Course> courseIterator=student.getList().iterator();
+  >             while (courseIterator.hasNext()) {
+  >                 System.out.println("\t\t|-" + courseIterator.next());
+  >             }
+  >         }
+  > 
+  >         System.out.println(school);
+  >         Iterator<Course> courseIterator1= school.getCourseList().iterator();
+  >         while (courseIterator1.hasNext()) {
+  >             Course course=courseIterator1.next();
+  >             System.out.println("\t|-" +course);
+  >         }
+  >     }
+  > }
+  > ```
+
+- **运行结果：**
+
+  >```java
+  >学校名称:牛逼大学
+  >	|-学号：1,姓名AlexanderBai
+  >		|-课程编号：1,课程名称：java
+  >		|-课程编号：3,课程名称：数据库原理及应用
+  >	|-学号：2,姓名dalao
+  >		|-课程编号：1,课程名称：java
+  >		|-课程编号：2,课程名称：JavaEE
+  >	|-学号：3,姓名xiaobai
+  >		|-课程编号：2,课程名称：JavaEE
+  >		|-课程编号：3,课程名称：数据库原理及应用
+  >学校名称:牛逼大学
+  >	|-课程编号：1,课程名称：java
+  >	|-课程编号：2,课程名称：JavaEE
+  >	|-课程编号：3,课程名称：数据库原理及应用
+  >```
+
