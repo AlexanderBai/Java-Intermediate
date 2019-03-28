@@ -1354,7 +1354,10 @@ public class LinkedList<E>
     implements List<E>, Deque<E>, Cloneable, java.io.Serializable
 ```
 
+```
+
 - **Queue的实现类有`LinkedList`，使用方法见`LinkedList`**
+```
 
 #### 3、属性类Properties
 
@@ -1366,7 +1369,7 @@ public class LinkedList<E>
 
 #####（1）、获取JVM属性
 
-​```java
+```java
 package com.alexanderbai.collection;
 
 import java.util.Properties;
