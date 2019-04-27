@@ -44,12 +44,13 @@
 >   - 返回对象的哈希码值
 >
 >   - ```java
->     /**
->     *This method is supported for the benefit of hash tables such as those *provided by java.util.HashMap
->     *支持此方法是为了哈希表的优势，例如由HahMap提供的哈希表
->     **/
->     ```
->   - **Java中`HashCode()`方法就是根据一定的规则将于对象相关的信息（比如对象的存储地址、对象的字段等）映射成一个值，这个数值就是哈希码值（也叫散列码值）**
+>    /**
+>    *This method is supported for the benefit of hash tables such as those       *provided by java.util.HashMap
+>    *支持此方法是为了哈希表的优势，例如由HahMap提供的哈希表
+>    **/
+>    ```
+>
+>   - **Java中`HashCode()`方法就是根据一定的规则将与对象相关的信息（比如对象的存储地址、对象的字段等）映射成一个值，这个数值就是哈希码值（也叫散列码值）**
 
 - **Comparable接口：**
   - 内部比较器，实现了此接口的类可与自身对象进行比较，依赖于CompareTo()方法的实现，CompareTo()方法有三个返回值
@@ -61,7 +62,7 @@
 
 - **集合和对象数组类似，都是保存对象的容器。但是集合更加强大，提供了添加、遍历、排序和删除等一系列基本操作，且集合可以动态扩容。**
 
-- **在实际开发中，大多数情况下数据的测定依赖于对象的传递，只有极少数是在操作具体的数据（联系DAO开发模式）**
+- **在实际开发中，大多数情况下数据的传递依赖于对象的传递，只有极少数是在操作具体的数据（联系DAO开发模式）**
 
   
 
@@ -180,7 +181,7 @@ class Person implements Comparable<Person>{
         }
         */
         Person person = (Person) o;
-        return Objects.equals(name, person.name) &&//依次进行属性比较
+        return Objects.equals(name, person.name) &&//依次进行属性比较，Objects类继承了Object类
                 Objects.equals(age, person.age);
        /*上面的代码等价于
         if (this.name.equals(person.name) && this.age == person.age) {
@@ -387,8 +388,8 @@ public class TestList {
         System.out.println(linkedList);
         
         System.out.println("((LinkedList<Person>) linkedList).getFirst() = " + ((LinkedList<Person>) linkedList).getFirst());
-        System.out.println("((LinkedList<Person>) linkedList).getFirst() = " + ((LinkedList<Person>) linkedList).getFirst());
         System.out.println("((LinkedList<Person>) linkedList).peekFirst() = " + ((LinkedList<Person>) linkedList).peekFirst());
+        System.out.println("((LinkedList<Person>) linkedList).getFirst() = " + ((LinkedList<Person>) linkedList).getFirst());
         System.out.println(linkedList);
         
         ((LinkedList<Person>) linkedList).addFirst(new Person("新来的", 22));
