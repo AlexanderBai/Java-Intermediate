@@ -158,7 +158,7 @@
 ####1、节点流与处理流的关系
 
 > - **节点流：**指**直接**对指定的数据源进行操作
-> - **处理流：**是指连接在**已有的流（节点流或数据流）**之上，为程序提供更为强大的读写功能的流。这里用**连接来**形容流是因为数据源与程序之间必须先建立一个用于数据传输的通道才能进行数据的传输（**如：HTTP连接**）
+> - **处理流：**是指连接在**已有的流（节点流或数据流）**之上，为程序提供更为强大的读写功能的流。这里用**连接流**形容流是因为数据源与程序之间必须先建立一个用于数据传输的通道才能进行数据的传输（**如：HTTP连接**）
 > - ![1552826167246](C:\Users\AlexanderBai\AppData\Roaming\Typora\typora-user-images\1552826167246.png)
 
 ####2、节点流						
@@ -178,16 +178,16 @@
 
 >​                                                                        **处理流**
 >
->|                    类型                    |                    字节流                     |               字符流               |
->| :----------------------------------------: | :-------------------------------------------: | :--------------------------------: |
->|          **Buffering（缓冲流）**           | **BufferedInputStream、BufferedOutputStream** | **BufferedReader、BufferedWriter** |
->|            Filtering（过滤流）             |     FilterInputStream、FilterOutputStream     |     FilterReader、FilterWriter     |
->| **Converting between bytes and character** |           ------------------------            |     InputStream、OutputStream      |
->|     Object Serialization(对象序列化流)     |      ObjectInputStream、ObjOutputStream       |        --------------------        |
->|       **Data conversion（数据流）**        |       DataInputStream、DataOutputStream       |      -----------------------       |
->|             Counting（计数流）             |             LineNumberInputStream             |          LineNumberReader          |
->|           Peeking ahead(预读流)            |              PushbackInputStream              |           PushbackReader           |
->|           **Printing（打印流）**           |                  PrintStream                  |            PrintWriter             |
+>|                    类型                    |                    字节流                     |                字符流                 |
+>| :----------------------------------------: | :-------------------------------------------: | :-----------------------------------: |
+>|          **Buffering（缓冲流）**           | **BufferedInputStream、BufferedOutputStream** |  **BufferedReader、BufferedWriter**   |
+>|            Filtering（过滤流）             |     FilterInputStream、FilterOutputStream     |      FilterReader、FilterWriter       |
+>| **Converting between bytes and character** |           ------------------------            | InputStreamReader、OutputStreamWriter |
+>|     Object Serialization(对象序列化流)     |      ObjectInputStream、ObjOutputStream       |         --------------------          |
+>|       **Data conversion（数据流）**        |       DataInputStream、DataOutputStream       |        -----------------------        |
+>|             Counting（计数流）             |             LineNumberInputStream             |           LineNumberReader            |
+>|           Peeking ahead(预读流)            |              PushbackInputStream              |            PushbackReader             |
+>|           **Printing（打印流）**           |                  PrintStream                  |              PrintWriter              |
 
 ### 五、InputSteam（输入流）
 
@@ -386,7 +386,7 @@
 >              while ((b=fileReader.read())!= -1) {
 >                  fileWriter.append((char)b);
 >              }
->              //对文件进行操作是必须关闭资源，不然可能看不到写出的文件，也可以调用刷新方法
+>              //对文件进行操作时必须关闭资源，不然可能看不到写出的文件，也可以调用刷新方法
 >              //fileWriter.flush();
 >              fileWriter.close();
 >          } catch (FileNotFoundException e) {
@@ -398,7 +398,7 @@
 >  }
 >  ```
 >
->- **对文件进行操作是必须关闭资源，不然可能看不到写出的文件，也可以调用刷新方法**
+>- **对文件进行操作时必须关闭资源，不然可能看不到写出的文件，也可以调用刷新方法**
 
 
 
@@ -426,7 +426,7 @@
 >             //在FileInputStream上套接一个缓冲
 >             fileInputStream = new FileInputStream("G:" + File.separator + "Demo.java");
 >             bufferedInputStream = new BufferedInputStream(fileInputStream);
->             bufferedInputStream.mark(100);//在地100个字符处做一个标记
+>             bufferedInputStream.mark(100);//在第100个字符处做一个标记
 > 
 >             for (int i = 0; i < 50&&(b=bufferedInputStream.read())!=-1; i++) {
 >                System.out.print((char) b);
@@ -452,7 +452,7 @@
 > }
 > ```
 >
-> - **mark(int readlimit):**类似于书签，用于标记，为reset掉用做左后标记
+> - **mark(int readlimit):**类似于书签，用于标记，为之后的reset调用做标记
 >
 >   ```java
 >    // @param   readlimit   the maximum limit of bytes that can be read before
@@ -462,15 +462,14 @@
 > - **reset():**调用此方法之后可以重新读取读过的数据
 >
 >   ```java
->   /** If <code>markpos</code> is <code>-1</code>
+>   /** If markpos is -1
 >   * (no mark has been set or the mark has been
->   * invalidated), an <code>IOException</code>
->   * is thrown. Otherwise, <code>pos</code> is
->   * set equal to <code>markpos</code>.
->   ***/
+>   * invalidated), an IOException  is thrown.
+>   * Otherwise, pos is set equal to markpos.
+> ***/
 >   ```
->
-> - 官方说是若读取的数据超过了mark标记的位置，则调用reset方法后无效。但在实际的开发中可以看出，当缓冲区已满溢出时，调用reset方法才无效。所以实际上reset是否有效取决于缓冲区的状态，并不是readlimit的值
+>   
+>- 官方说是若读取的数据超过了mark标记的位置，则调用reset方法后无效。但在实际的开发中可以看出，当缓冲区已满溢出时，调用reset方法才无效。所以实际上reset是否有效取决于缓冲区的状态，并不是readlimit的值
 
 > - **BufferedWriter和BufferedReader**测试
 >
@@ -545,10 +544,9 @@
     > An OutputStreamWriter is a bridge from character streams to byte streams: 
     > 
     > 																JDK 1.8
-    > 
     > ```
-
     
+
 
 ####3、数据流
 
@@ -568,7 +566,7 @@ import java.io.*;
 public class TestDataStream {
     public static void main(String[] args) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        //在调用构造方法时，在内存中创建一个byteArray自己数组
+        //在调用构造方法时，在内存中创建一个byteArray字节数组
         DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
         //在输出流的外面套上一层数据流，用于读取int、double等类型的数据
         try {
@@ -677,65 +675,66 @@ public class TestDataStream {
 >import java.io.*;
 >
 >/**
-> * @Author AlexanderBai
-> * @data 2019/3/20 21:41
-> */
+>* @Author AlexanderBai
+>* @data 2019/3/20 21:41
+>*/
 >class Person implements Serializable {//实现了Serializable接口的类的对象允许序列化
->    private int id;
->    private String name;
->    private transient boolean flag=true;//transient关键字表示该对象的该属性在序列化是不考虑
+>	private int id;
+>	private String name;
+>	private transient boolean flag=true;//transient关键字表示该对象的该属性在序列化是不考虑
 >
->    public void setId(int id) {
->        this.id = id;
->    }
+>	public void setId(int id) {
+>		this.id = id;
+>	}
 >
->    public void setName(String name) {
->        this.name = name;
->    }
+>	public void setName(String name) {
+>		this.name = name;
+>	}
 >
->    public void setFlag(boolean flag) {
->        this.flag = flag;
->    }
+>	public void setFlag(boolean flag) {
+>		this.flag = flag;
+>	}
 >
->    public int getId() {
->        return id;
->    }
+>	public int getId() {
+>		return id;
+>	}
 >
->    public String getName() {
->        return name;
->    }
+>	public String getName() {
+>		return name;
+>	}
 >
->    public boolean isFlag() {
->        return flag;
->    }
+>	public boolean isFlag() {
+>		return flag;
+>	}
 >}
 >public class TestObjectStream {
->    public static void main(String[] args) {
+>	public static void main(String[] args) {
 >        Person person=new Person();
 >        person.setId(1);
 >        person.setName("AlexanderBai");
 >        person.setFlag(true);
 >        ObjectInputStream objectInputStream=null;
 >        ObjectOutputStream objectOutputStream=null;
+>        
 >        try {
->            //序列化
->            objectOutputStream = new ObjectOutputStream(new FileOutputStream("G:" + File.separator + "test.txt"));
->            objectOutputStream.writeObject(person);
+>          //序列化
+>          objectOutputStream = new ObjectOutputStream(new FileOutputStream("G:" + File.separator + "test.txt"));
+>          objectOutputStream.writeObject(person);
 >
->            //反序列化,使用强制类型转换为指定的类型
->            objectInputStream = new ObjectInputStream(new FileInputStream("G:" + File.separator + "test.txt"));
->            try {
->                Person person1= (Person) objectInputStream.readObject();
->                System.out.println("person1.getId() = " + person1.getId());
->                System.out.println("person1.getName() = " + person1.getName());
->                System.out.println("person1.isFlag() = " + person1.isFlag());
->            } catch (ClassNotFoundException e) {
->                e.printStackTrace();
->            }
+>          //反序列化,使用强制类型转换为指定的类型
+>          objectInputStream = new ObjectInputStream(new FileInputStream("G:" + File.separator + "test.txt"));
+>          try {
+>              Person person1= (Person) objectInputStream.readObject();
+>              System.out.println("person1.getId() = " + person1.getId());
+>              System.out.println("person1.getName() = " + person1.getName());
+>              System.out.println("person1.isFlag() = " + person1.isFlag());
+>          } catch (ClassNotFoundException e) {
+>              e.printStackTrace();
+>          }
 >        } catch (IOException e) {
->            e.printStackTrace();
+>          e.printStackTrace();
 >        }
->    }
+>	}
 >}
 >```
 >
@@ -746,24 +745,24 @@ public class TestDataStream {
 >>  person1.getName() = AlexanderBai
 >>  person1.isFlag() = false
 >>  ```
+>>- 观察可以发现flag输出flase,是因为java默认Boolean值为flase.可以写一个Demo进行测试，无需死记
 >>
->>  观察可以发现flag输出flase,是因为java默认Boolean值为flase.可以忍写一个Demo进行测试，无需死记
+>>```java
+>>package Demo;
 >>
->>  ```java
->>  package Demo;
->>  
->>  /**
->>   * @Author AlexanderBai
->>   * @data 2019/3/20 22:38
->>   */
->>  public class Test {
->>      boolean f;
->>      public static void main(String[] args) {
->>          Test test=new Test();
->>          System.out.println("f = " + test.f);
->>      }
->>  }
->>  ```
+>>/**
+>>*@Author AlexanderBai
+>>* @data 2019/3/20 22:38
+>>*/
+>>public class Test {
+>>    boolean f;
+>>    public static void main(String[] args) {
+>>	    Test test=new Test();
+>>    	System.out.println("f = " + test.f);
+>>    }
+>>}
+>>
+>>```
 
 
 
